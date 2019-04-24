@@ -1,0 +1,26 @@
+import tensorflow as tf
+import numpy as np
+
+tf.enable_eager_execution()
+
+x_data = [1, 2, 3, 4, 5]
+y_data = [1, 2, 3, 4, 5]
+
+import matplotlib.pyplot as plt
+plt.plot(x_data, y_data, 'o')
+plt.ylim(0, 8)
+(0, 8)
+
+v =[1., 2., 3., 4.]
+tf.reduce_mean(v) # 2.5
+<tf.Tensor: id=6, shape=(), dtype=float32, numpy=2.5>
+tf.square(3) # 9
+<tf.Tensor: id=9, shape=(), dtype=int32, numpy=9>
+
+x_data = [1, 2, 3, 4, 5]
+y_data = [1, 2, 3, 4, 5]
+
+W = tf.Variable(2.0)
+b = tf.Variable(0.5)
+
+hypothesis = W * x_data + b
