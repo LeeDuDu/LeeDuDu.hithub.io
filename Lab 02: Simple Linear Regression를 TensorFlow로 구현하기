@@ -1,26 +1,44 @@
 import tensorflow as tf
 import numpy as np
-
 tf.enable_eager_execution()
 
-x_data = [1, 2, 3, 4, 5]
+→ tensorflow를 tf로 가져 오기
+numpy라는 패키지를 불러오면서 코드를 쓸 때 numpy를 np로 사용하기
+
+
+# Data
+x_data = [1, 2, 3, 4, 5] 
 y_data = [1, 2, 3, 4, 5]
+→ x값 데이터 , y값 데이터
 
-import matplotlib.pyplot as plt
-plt.plot(x_data, y_data, 'o')
-plt.ylim(0, 8)
-(0, 8)
-
-v =[1., 2., 3., 4.]
-tf.reduce_mean(v) # 2.5
-<tf.Tensor: id=6, shape=(), dtype=float32, numpy=2.5>
-tf.square(3) # 9
-<tf.Tensor: id=9, shape=(), dtype=int32, numpy=9>
-
-x_data = [1, 2, 3, 4, 5]
-y_data = [1, 2, 3, 4, 5]
-
-W = tf.Variable(2.0)
+# W, b initialize
+W = tf.Variable(2.9)
 b = tf.Variable(0.5)
 
-hypothesis = W * x_data + b
+# W, b update
+for i in range(100):
+    # Gradient descent
+    with tf.GradientTape() as tape:
+        hypothesis = W * x_data + b
+        cost = tf.reduce_mean(tf.square(hypothesis - y_data))
+    W_grad, b_grad = tape.gradient(cost, [W, b])
+    W.assign_sub(learning_rate * W_grad)
+    b.assign_sub(learning_rate * b_grad)
+    if i % 10 == 0:
+      print("{:5}|{:10.4f}|{:10.4f}|{:10.6f}".format(i, W.numpy(), b.numpy(), cost))
+
+print()
+
+0|    2.4520|    0.3760| 45.660004
+   10|    1.1036|    0.0034|  0.206336
+   20|    1.0128|   -0.0209|  0.001026
+   30|    1.0065|   -0.0218|  0.000093
+   40|    1.0059|   -0.0212|  0.000083
+   50|    1.0057|   -0.0205|  0.000077
+   60|    1.0055|   -0.0198|  0.000072
+   70|    1.0053|   -0.0192|  0.000067
+   80|    1.0051|   -0.0185|  0.000063
+   90|    1.0050|   -0.0179|  0.000059
+
+tf.Tensor(5.0066934, shape=(), dtype=float32)
+tf.Tensor(2.4946523, shape=(), dtype=float32)
