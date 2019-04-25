@@ -7,7 +7,7 @@ Y  = [152., 185., 180., 196., 142.] → y 값
 # random weights
 w1 = tf.Variable(tf.random.normal([1]))
 w2 = tf.Variable(tf.random.normal([1]))
-w3 = tf.Variable(tf.random.normal([1]))g
+w3 = tf.Variable(tf.random.normal([1]))
 b  = tf.Variable(tf.random.normal([1]))
 
 → 초기값 1로 설정
