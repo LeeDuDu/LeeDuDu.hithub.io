@@ -1,1 +1,13 @@
-ㅇㅇ
+import tensorflow.contrib.eager as tfe
+tf.enable eager execution()
+dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train).batch(len(x_train))
+w = tf.variable(tf.zeros([2,1]), name='weight')
+b = tf.variable(tf.zeros([1]), name='bias')
+
+def logistic_regression(features):
+    hypothesis  = tf.div(1., 1. + tf.exp(tf.matmul(features, W) + b))
+    return hypothesis
+
+def loss_fn(hypothesis, features, labels):
+hypothesis = logistic_regression(features)
+cost = -tf.reduce_mean(labels * tf.log
