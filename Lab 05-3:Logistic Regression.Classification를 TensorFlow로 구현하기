@@ -71,7 +71,7 @@ return accuracy
  →새로운 데이터로 확인합니다.
 → 추론한 값은 0.5를 기준(Sigmoid 그래프 참조)로 0과 1의 값을 리턴합니다.
 → Sigmoid 함수를 통해 예측값이 0.5보다 크면 1을 반환하고 0.5보다 작으면 0으로 반환합니다.
-→ 가설을 통해 실 값과 비교한 정확도를 측정합니다
+→ 가설을 통해 실제 값과 비교한 정확도를 측정합니다
     
 test_acc = accuracy_fn(logistic_regression(x_test),y_test) → hypothesis 출력
     
