@@ -106,7 +106,7 @@ for step in range(300):
     descent = W - tf.multiply(alpha, gradient)
     W.assign(descent)
     
-    → gfadient 학습을 300번 실행
+    → gadient 학습을 300번 실행
     
     if step % 10 == 0:
         print('{:5} | {:10.4f} | {:10.6f}'.format(
