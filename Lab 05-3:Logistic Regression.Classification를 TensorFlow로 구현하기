@@ -17,34 +17,33 @@ y_test = [[1.]]
 → 학습을 위한 x 데이터 y 데이터
 
 import tensorflow.contrib.eager as tfe → 텐서플로우 라이브러리 import
-tf.enable eager execution() → execution을 활성화해서 즉시 실행합니다. 
-dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train).batch(len(x_train)) → x와 y 데이터 값을 가져옴
+tf.enable eager execution() → eager모드를 위해서 execution을 활성화해서 즉시 실행합니다. 
+dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train).batch(len(x_train)) → x와 y 데이터 값을 가져와서 x,y의 길이를 batch 학습합니다.
 w = tf.variable(tf.zeros([2,1]), name='weight') → 2행1열로 값이 만들어짐
 b = tf.variable(tf.zeros([1]), name='bias') → 1열로 만들어짐
 
 def logistic_regression(features): 
 
-→ Sigmoid 함수를 가설로 선언합니다
-
 def loss_fn(hypothesis, features, labels): 
-hypothesis = logistic_regression(features)
+hypothesis = logistic_regression(features) → 코드상에 오류를 없애기 위해 사용합니다.
 cost = -tf.reduce_mean(labels * tf.log(loss_fn(hypothesis) + (1 - labels) * tf.log(1 - hypothesis)) return cost
 
 → 실제값과 가설은 통해 나온 값을 reduce.mean이라는 차원축소를 통해 원하는 cost값을 구해내는것
 
 → 가설을 검증할 Cost 함수를 정의합니다
 
-def grad(hypothesis, features, labels):
-    with tf.GradientTape() as tape: → 가설과 라벨(실제 값)을 넣음으로써 loss값이 나옴
-        loss_value = loss_fn(logistic_regression(features),features,labels)
+def grad(hypothesis, features, labels): → hypothesis와 label을 출력합니다.
+    with tf.GradientTape() as tape: 
+        loss_value = loss_fn(logistic_regression(features),features,labels) 
+        → 가설과 라벨(실제 값)을 넣음으로써 loss값이 나옴
     return tape.gradient(loss_value, [W,b]) → 모델값과 loss 값을 가짐으로서 tape.gradient값이 바뀌게 됨 
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01) → 최적화 
 → GradientTape를 통해 경사값을 계산합니다.
 
 for step in range(EPOCHS):
-    for features, labels  in tfe.Iterator(dataset): → dataset에서 가져온 x값과 y값 데이터를 대입한다.
-        grads = grad(logistic_regression(features), features, labels) → 가설 대입
-        optimizer.apply_gradients(grads_and_vars=zip(grads,[W,b])) 
+    for features, labels  in tfe.Iterator(dataset): → dataset을 넣어서 lterator의 결과값을 구한다.
+        grads = grad(logistic_regression(features), features, labels) → 가설을 대입해 grads를 구한다.
+        optimizer.apply_gradients(grads_and_vars=zip(grads,[W,b])) → w,b의 모델이 업데이트 되면서 값이 만들어진다. 
         if step % 100 == 0: → 100번 마다 출력
             print("Iter: {}, Loss: {:.4f}".format(step, loss_fn(logistic_regression(features),features,labels)))
             
@@ -63,13 +62,13 @@ Testset Accuracy: 1.0000
 
 → Eager모드에서 학습을 실행합니다.
 → 위의 Data를 Cost함수를 통해 학습시킨 후 모델을 생성합니다.
-→ 새로운 Data를 통한 검증 수행 [5,2]의 Data로 테스트 수행 /#그래프상 1이 나와야 정상입니다/
+→ 새로운 Data를 통한 검증 수행 [5,2]의 Data로 테스트 수행 /# 그래프상 1이 나와야 정상입니다/
 
 def accuracy_fn(hypothesis, labels): → 가설과 실제값을 비교합니다
 predicted = tf.cast(hypothesis > 0.5, dtype=tf.float32) → 예측된 값
 accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, labels), dtype=tf.int32))
 return accuracy 
- 
+ →새로운 데이터로 확인합니다.
 → 추론한 값은 0.5를 기준(Sigmoid 그래프 참조)로 0과 1의 값을 리턴합니다.
 → Sigmoid 함수를 통해 예측값이 0.5보다 크면 1을 반환하고 0.5보다 작으면 0으로 반환합니다.
 → 가설을 통해 실재 값과 비교한 정확도를 측정합니다
